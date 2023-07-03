@@ -21,21 +21,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.lunchtray.ui.OrderViewModel
 
-enum class AppScreen(@StringRes val title: Int) {
+enum class LunchTrayAppScreen(@StringRes val title: Int) {
     StartScreen(R.string.app_name),
     EntreeScreen(R.string.choose_entree),
     SideDishScreen(R.string.choose_side_dish),
-    AccomanimentScreen(R.string.choose_accompaniment),
+    AccompanimentScreen(R.string.choose_accompaniment),
     CheckoutScreen(R.string.order_checkout)
 }
 
 // TODO: AppBar
 
 @Composable
-fun LunchTrayApp() {
-    // TODO: Create Controller and initialization
+fun LunchTrayApp(
+    navController: NavController = rememberNavController()
+) {
+    // Create Controller and initialization
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = LunchTrayAppScreen.valueOf(
+        backStackEntry?.destination?.route ?: LunchTrayAppScreen.StartScreen.name
+    )
 
     // Create ViewModel
     val viewModel: OrderViewModel = viewModel()
